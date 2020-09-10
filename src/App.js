@@ -1,18 +1,15 @@
 import React from "react";
 import "./App.css";
-import { Router, Route, Switch } from "react-router-dom";
-import history from "./history";
+import {  Route, Switch } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import FormComponent from "./components/FormComponent";
 
 function App() {
   return (
-    <Router history={history}>
-      <Switch>
-        <Route path="/" component={LoginPage} exact={true} />
-        <Route path="/form" component={FormComponent} exact={true} />
-      </Switch>
-    </Router>
+    <Switch>
+      <Route exact path="/" component={LoginPage} />
+      <Route exac path="/form" component={FormComponent} />
+    </Switch>
   );
 }
 

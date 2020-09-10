@@ -11,12 +11,7 @@ export const getFormStructure = (categories, subCategories, topics) => {
     ? categoriesList.map((option) => option.name)
     : [];
   categoryOptions = [...categoriesList];
-  console.log(
-    categories,
-    categoriesCanSelect,
-    categoryOptions,
-    "categoriescategories"
-  );
+
   const subCategoriesList = [];
   let subCategoriesOptions = subCategories
     ? subCategories.forEach((eachSubCategory) =>
@@ -89,7 +84,7 @@ export const getFormStructure = (categories, subCategories, topics) => {
         .required("Required")
         .oneOf(topicsCanSelect, "Please select one"),
       options: topicOptions,
-      customProps: { id: "", label: "Select a Subcategory", defaultValue: "" },
+      customProps: { id: "", label: "Select a topic", defaultValue: "" },
     },
     {
       name: "startDate",

@@ -1,80 +1,101 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core";
+import { withStyles, Box } from "@material-ui/core";
 import axios from "axios";
-import Header from './Header';
-import FormBuilder from './FormBuilder'
-import {getFormStructure} from './formData'
+import Header from "./Header";
+import FormBuilder from "./FormBuilder";
+import { getFormStructure } from "./formData";
+import { CircularProgress } from "@material-ui/core";
 
 const styles = (theme) => ({
   submit: {
     marginTop: 20,
-    backgroundColor:"#FF484F",
+    backgroundColor: "#FF484F",
   },
-  fields:{
+  fields: {
     marginTop: 20,
-  }
+  },
 });
 
 class FormComponent extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {
+      categories: [],
+      subCategories: [],
+      topics: [],
+      loader: true,
+    };
+  }
+  componentDidMount() {
+    const token = localStorage.getItem("Token");
+    axios
+      .get("http://18.220.240.163:8080/rest/admin/categories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const allCategories = res.data.result.list;
+        this.setState({
+          categories: allCategories,
+        });
+      });
 
-        this.state = {
-            categories: [],
-            subCategories: [],
-            topics: [],
-        };
-    }
-    componentDidMount() {
-        const token = localStorage.getItem('Token')
-        axios.get('http://18.220.240.163:8080/rest/admin/categories', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                const allCategories = res.data.result.list;
-                this.setState({
-                    categories: allCategories,
-                })
-            })
+    axios
+      .get("http://18.220.240.163:8080/rest/admin/subcategories", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const allSubCategories = res.data.result.list;
+        this.setState({
+          subCategories: allSubCategories,
+        });
+      });
 
-        axios.get('http://18.220.240.163:8080/rest/admin/subcategories', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                const allSubCategories = res.data.result.list;
-                this.setState({
-                    subCategories: allSubCategories,
-                })
-            })
+    axios
+      .get("http://18.220.240.163:8080/rest/admin/topics", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const allTopics = res.data.result.list;
+        this.setState({
+          topics: allTopics,
+          loader: false,
+        });
+      });
+  }
 
-        axios.get('http://18.220.240.163:8080/rest/admin/topics', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(res => {
-                const allTopics = res.data.result.list;
-                this.setState({
-                    topics: allTopics,
-                })
-            })
-    }
-
-    onSubmit = (data) =>{
-        console.log(data, 'data')
-        alert(JSON.stringify(data,null, 2));
-    }
+  onSubmit = (data) => {
+    console.log(data, "data");
+    alert(JSON.stringify(data, null, 2));
+  };
   render() {
-    const {categories,subCategories,topics} = this.state;
+    const { categories, subCategories, topics, loader } = this.state;
     return (
       <React.Fragment>
         <Header />
-        <FormBuilder structure={getFormStructure(categories,subCategories,topics)} onSubmit={this.onSubmit} />
+        {loader ? (
+          <Box
+            style={{
+              height: "100vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress size={100} />
+          </Box>
+        ) : (
+          <FormBuilder
+            structure={getFormStructure(categories, subCategories, topics)}
+            onSubmit={this.onSubmit}
+          />
+        )}
       </React.Fragment>
     );
   }

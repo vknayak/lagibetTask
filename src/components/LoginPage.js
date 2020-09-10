@@ -9,6 +9,7 @@ import Box from "@material-ui/core/Box";
 import LagibetLogo from "../assets/img/logo.png";
 import Grid from "@material-ui/core/Grid";
 import Header from './Header';
+import {Redirect} from 'react-router-dom';
 
 const styles = (theme) => ({
   submit: {
@@ -27,6 +28,7 @@ class LoginPage extends Component {
     this.state = {
       userName: "",
       password: "",
+      isLoggedIn: false,
     };
   }
 
@@ -37,7 +39,7 @@ class LoginPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { history } = this.props;
+    // const { history } = this.props;
     const { userName, password } = this.state;
     axios
       .post("http://18.220.240.163:8080/rest/authenticate/login", {
@@ -46,8 +48,9 @@ class LoginPage extends Component {
       })
       .then((res) => {
         localStorage.setItem("Token", res.data.result.accessToken);
-        history.push('/form')
+        // history.push('/form')
       });
+      this.setState({isLoggedIn:true})
   };
   render() {
     const { classes } = this.props;
@@ -108,6 +111,8 @@ class LoginPage extends Component {
           </Grid>
         </Grid>
         </Container>
+
+        {this.state.isLoggedIn ? <Redirect to="/form"/> : ''}
 
       </React.Fragment>
     );
