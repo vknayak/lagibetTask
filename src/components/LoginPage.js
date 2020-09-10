@@ -37,6 +37,7 @@ class LoginPage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { history } = this.props;
     const { userName, password } = this.state;
     axios
       .post("http://18.220.240.163:8080/rest/authenticate/login", {
@@ -45,6 +46,7 @@ class LoginPage extends Component {
       })
       .then((res) => {
         localStorage.setItem("Token", res.data.result.accessToken);
+        history.push('/form')
       });
   };
   render() {
