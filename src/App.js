@@ -7,7 +7,7 @@ import FormComponent from "./components/FormComponent";
 function App() {
   return (
     <Switch>
-      <Route exact path="/" component={LoginPage} />
+      <Route exact path="/login" component={LoginPage} />
       <Route exac path="/form" component={FormComponent} />
     </Switch>
   );

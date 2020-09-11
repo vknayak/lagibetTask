@@ -5,6 +5,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Box from "@material-ui/core/Box";
 import LagibetLogo from "../assets/img/logo.png";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Logout from './Logout'
+import {Redirect} from 'react-router-dom';
 
 const styles = (theme) => ({
   logoContainer: {
@@ -18,13 +21,16 @@ const styles = (theme) => ({
   lagibetServiceNameContainer: {
     marginLeft: theme.spacing(1),
   },
-
 });
 
 class Header extends Component {
-
+  handleLogout = () => {
+    localStorage.removeItem('Token')
+    return <Redirect to="/login" />;
+  };
   render() {
     const { classes } = this.props;
+    const { user } = this.props;
     return (
       <React.Fragment>
         <AppBar position="static">
@@ -40,6 +46,12 @@ class Header extends Component {
                   Lagibet
                 </Typography>
               </Box>
+            </Box>
+            <Box>
+              <Typography variant="h6" style={{ fontWeight: 100 }}>
+                {user}
+              </Typography>
+              {user && <button onClick={this.handleLogout}>logout</button>}
             </Box>
           </Toolbar>
         </AppBar>

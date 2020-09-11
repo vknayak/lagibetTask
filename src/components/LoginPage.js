@@ -8,17 +8,17 @@ import axios from "axios";
 import Box from "@material-ui/core/Box";
 import LagibetLogo from "../assets/img/logo.png";
 import Grid from "@material-ui/core/Grid";
-import Header from './Header';
-import {Redirect} from 'react-router-dom';
+import Header from "./Header";
+import { Redirect } from "react-router-dom";
 
 const styles = (theme) => ({
   submit: {
     marginTop: 20,
-    backgroundColor:"#FF484F",
+    backgroundColor: "#FF484F",
   },
-  fields:{
+  fields: {
     marginTop: 20,
-  }
+  },
 });
 
 class LoginPage extends Component {
@@ -50,70 +50,78 @@ class LoginPage extends Component {
         localStorage.setItem("Token", res.data.result.accessToken);
         // history.push('/form')
       });
-      this.setState({isLoggedIn:true})
+    this.setState({ isLoggedIn: true });
   };
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
         <Header />
-        <Container maxWidth={false} >
-        <Grid container spacing={3}>
-          <Grid item xs={3} md={3} lg={3}>
-            <Box className={classes.logoContainer}>
-              <img
-                src={LagibetLogo}
-                alt="Lagibet Logo"
-                style={{ height: 90, marginTop:20 }}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={9} md={9} lg={9} container justify="center">
-            <Box className={classes.paper} m={3}>
-              <Typography component="div" variant="h5">
-                Login
-              </Typography>
-              <Box className={classes.fields}>
-                <TextField
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="userName"
-                  value={this.state.userName}
-                  onChange={(e) => this.handleChange(e)}
-                  variant="outlined"
+        <Container maxWidth={false}>
+          <Grid container spacing={3}>
+            <Grid item xs={3} md={3} lg={3}>
+              <Box className={classes.logoContainer}>
+                <img
+                  src={LagibetLogo}
+                  alt="Lagibet Logo"
+                  style={{ height: 90, marginTop: 20 }}
                 />
               </Box>
-              <Box className={classes.fields}>
-                <TextField
-                  required
+            </Grid>
+            <Grid item xs={9} md={9} lg={9} container justify="center">
+              <Box className={classes.paper} m={3}>
+                <Typography component="div" variant="h5">
+                  Login
+                </Typography>
+                <Box className={classes.fields}>
+                  <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="userName"
+                    value={this.state.userName}
+                    onChange={(e) => this.handleChange(e)}
+                    variant="outlined"
+                  />
+                </Box>
+                <Box className={classes.fields}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    value={this.state.password}
+                    onChange={(e) => this.handleChange(e)}
+                    variant="outlined"
+                  />
+                </Box>
+                <Button
+                  type="submit"
+                  variant="contained"
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  value={this.state.password}
-                  onChange={(e) => this.handleChange(e)}
-                  variant="outlined"
-                />
+                  onClick={this.handleSubmit}
+                  className={classes.submit}
+                >
+                  Login
+                </Button>
               </Box>
-              <Button
-                type="submit"
-                variant="contained"
-                fullWidth
-                onClick={this.handleSubmit}
-                className={classes.submit}
-              >
-                Login
-              </Button>
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
         </Container>
 
-        {this.state.isLoggedIn ? <Redirect to="/form"/> : ''}
-
+        {this.state.isLoggedIn ? (
+          <Redirect
+            to={{
+              pathname: "/form",
+              state: { user: this.state.userName},
+            }}
+          />
+        ) : (
+          ""
+        )}
       </React.Fragment>
     );
   }

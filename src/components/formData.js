@@ -45,12 +45,21 @@ export const getFormStructure = (categories, subCategories, topics) => {
       type: "text",
       validation: yup
         .string()
-        .length(6, "Must be 6 characters.")
         .required("Required"),
-
       customProps: {
         placeholder: "Enter Name",
         label: "Name",
+      },
+    },
+    {
+      name: "imageUrl",
+      type: "text",
+      validation: yup
+        .string()
+        .required("Required"),
+      customProps: {
+        placeholder: "Enter image Url",
+        label: "Image Url",
       },
     },
     {

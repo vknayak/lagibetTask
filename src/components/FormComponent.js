@@ -19,7 +19,7 @@ const styles = (theme) => ({
 class FormComponent extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props.location.state.user, "kumar");
     this.state = {
       categories: [],
       subCategories: [],
@@ -36,6 +36,7 @@ class FormComponent extends Component {
         },
       })
       .then((res) => {
+        console.log(res.data.result.list, "nayak");
         const allCategories = res.data.result.list;
         this.setState({
           categories: allCategories,
@@ -72,13 +73,24 @@ class FormComponent extends Component {
 
   onSubmit = (data) => {
     console.log(data, "data");
+    const token = localStorage.getItem("Token");
+    axios.post(
+      "http://18.220.240.163:8080/rest/admin/matches",
+      { data },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     alert(JSON.stringify(data, null, 2));
   };
   render() {
     const { categories, subCategories, topics, loader } = this.state;
+
     return (
       <React.Fragment>
-        <Header />
+        <Header user={this.props.location.state.user} />
         {loader ? (
           <Box
             style={{
